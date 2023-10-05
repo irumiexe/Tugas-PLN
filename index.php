@@ -6,17 +6,24 @@ if (isset($_GET['aksi'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
 
-        $hasil = $db->query("SELECT * from tbl_akun where username='$username' AND password='$password'");
+        $hasil = $db->query("SELECT * FROM tbl_akun WHERE username='$username' AND password='$password'");
         $cek = mysqli_num_rows($hasil);
-        if ($hasil > 0) {
+
+        if ($cek > 0) {
             $data = $hasil->fetch_assoc();
+            $_SESSION['kd_akun_user'] = $data['kd_akun']; // Simpan kd_akun di sesi
+            $_SESSION['username'] = $username;
+            $_SESSION['level'] = $data['level'];
+
             if ($data['level'] == 'Admin') {
-                $_SESSION['username'] = $username;
-                $_SESSION['level'] = 'Admin';
                 header("location:admin/index.php");
-            }else {
+            } elseif ($data['level'] == 'petlap') {
+                header("location:petlap/index.php");
+            } else {
                 header("location:index.php?pesan=gagal");
             }
+        } else {
+            header("location:index.php?pesan=gagal");
         }
     }
 }
