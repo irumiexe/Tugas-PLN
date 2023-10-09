@@ -32,7 +32,7 @@ include 'header.php';
                         <tr>
                             <th class="text-center">ID Pelanggan</th>
                             <th class="text-center">Nama Pelanggan</th>
-                            <th class="text-center">Daya</th>
+                            <th class="text-center">Daya (VA)</th>
                             <th class="text-center">Tipe Pembayaran</th>
                             <th class="text-center">Maps</th>
                             <th class="text-center">Photo Meteran</th>
@@ -40,6 +40,32 @@ include 'header.php';
                             <th class="text-center">Opsi</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        <?php
+
+                        $hasil = "SELECT * from tbl_pelanggan order by idpel asc";
+                        $tampil = mysqli_query($db, $hasil);
+                        while ($d = $tampil->fetch_array()) {
+                        ?>
+                            <tr>
+                                <td class="text-center"><?php echo $d['idpel'] ?></td>
+                                <td class="text-center"><?php echo $d['nama_pel'] ?></td>
+                                <td class="text-center"><?php echo $d['daya'] ?></td>
+                                <td class="text-center"><?php echo $d['tipe'] ?></td>
+                                <td style="width: 250px; height: 250px;">
+                                    <iframe src='https://www.google.com/maps?q=<?Php echo $d["latitude"] ?>,<?php echo $d["longitude"]; ?>&hl=es;z=14&output=embed' style="width:100%; height:100%;"></iframe>
+                                </td>
+                                <td class="text-center"><img src="../file/<?php echo $d['pmet']; ?>" style="width: 100px; height:200px"></td>
+                                <td class="text-center"><?php echo $d['ket'] ?></td>
+                                <td class="text-center">
+                                    <a href="3pelangganaksi.php?kode=<?php echo $d['idpel'] ?>&aksi=ubah" class="btn btn-success">Ubah</a>
+                                    <a href="" class="btn btn-danger">Hapus</a>
+                                </td>
+                            </tr>
+                        <?php
+                        }
+                        ?>
+                    </tbody>
                 </table>
             </div>
         </div>
