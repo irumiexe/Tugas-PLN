@@ -36,7 +36,7 @@ include 'header.php';
                             <th class="text-center">Tipe Pembayaran</th>
                             <th class="text-center">Maps</th>
                             <th class="text-center">Photo Meteran</th>
-                            <th class="text-center">Keterangann</th>
+                            <th class="text-center">Keterangan</th>
                             <th class="text-center">Opsi</th>
                         </tr>
                     </thead>
