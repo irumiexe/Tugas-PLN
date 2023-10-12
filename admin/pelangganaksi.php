@@ -54,7 +54,6 @@ if (isset($_GET['aksi'])) {
                         </div>
                         <div class="form-group">
                             <label for="">Daya (VA)</label>
-                            <p style="font-size: 10px; color: red;"><i>*Isi salah satu kolom yang dibawah ini</i></p>
                             <div class="input-group">
                                 <div class="row">
                                     <div class="col">
@@ -71,9 +70,6 @@ if (isset($_GET['aksi'])) {
                                             <option value="7700">7700</option>
                                             <option value="11000">11000</option>
                                         </select>
-                                    </div>
-                                    <div class="col">
-                                        <!-- <input type="text" class="form-control" name="daya" placeholder="Masukkan Jika Tidak Ada Pilihan Daya"> -->
                                     </div>
                                 </div>
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-flash"></i></span>
@@ -117,10 +113,6 @@ if (isset($_GET['aksi'])) {
                                             <option value="Buram">Buram</option>
                                             <option value="Normal">Normal</option>
                                         </select>
-                                    </div>
-                                    <div class="col">
-                                        <label for="">Rincian</label>
-                                        <input type="text" name="ket2" class="form-control" placeholder="Masukkan Jika Ada Keterangan Lebih Lanjut">
                                     </div>
                                 </div>
                             </div>
@@ -249,7 +241,7 @@ if (isset($_GET['aksi'])) {
                                     <label for="">Keterangan</label>
                                     <select name="ket" class="form-control" required>
                                         <option value="<?php echo $d['ket'] ?>"> <?php echo $d['ket'] ?></option>
-                                        <option value="macet">macet</option>
+                                        <option value="macet">Macet</option>
                                         <option value="Tinggi">Tinggi</option>
                                         <option value="Buram">Buram</option>
                                         <option value="Normal">Normal</option>
