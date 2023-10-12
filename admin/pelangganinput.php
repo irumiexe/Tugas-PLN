@@ -24,9 +24,14 @@ include 'header.php';
         <div class="bootstrap-tabel">
             <div class="d-flex justify-content-between mb-3">
                 <a href="pelangganaksi.php?aksi=tambah" class="btn btn-primary">Tambah Data</a>
-                
+                <form class="d-flex ml-auto">
+                    <input class="form-control mr-1" name="cari" type="search" placeholder="Search" aria-label="Search" value="<?php if (isset($_GET['cari'])) {
+                                                                                                                                    echo $_GET['cari'];
+                                                                                                                                } ?>">
+                    <button class="btn btn-outline-success" type="cari">Search</button>
+                </form>
             </div>
-            
+
             <hr>
             <div class="table-responsive">
                 <table class="table table-bordered">
@@ -44,8 +49,13 @@ include 'header.php';
                     </thead>
                     <tbody>
                         <?php
-                        
-                        $hasil = "SELECT * from tbl_pelanggan order by idpel asc";
+                        if (isset($_GET['cari'])) {
+                            $pencarian = $_GET['cari'];
+                            $hasil = "SELECT * from tbl_pelanggan where idpel like '%" . $pencarian . "%' or nama_pel like '%" . $pencarian . "%' 
+                                                                            or ket like '%" . $pencarian . "%' or daya like '%" . $pencarian . "%' or tipe like '%" . $pencarian . "%' order by idpel asc";
+                        } else {
+                            $hasil = "SELECT * from tbl_pelanggan order by idpel asc";
+                        }
                         $tampil = mysqli_query($db, $hasil);
                         while ($d = $tampil->fetch_array()) {
                         ?>
