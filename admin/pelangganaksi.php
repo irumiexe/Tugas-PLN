@@ -24,8 +24,7 @@ if (isset($_GET['aksi'])) {
             <div class="panel-container">
                 <div class="bootstrap-tabel">
                     <form class="myForm" action="pelangganproses.php?proses=prosestambah" method="post" autocomplete="off" enctype="multipart/form-data" autocomplete="off">
-                        <div class="form-group">
-                            <label for="">Tanggal</label>
+                        <div class="form-group"> <label for="">Tanggal</label>
                             <input type="text" name="tanggal" class="form-control" value="<?php echo date('Y-m-d'); ?>" readonly>
                         </div>
                         <div class="form-group">
@@ -76,10 +75,18 @@ if (isset($_GET['aksi'])) {
                         </div>
                         <div class="modal-footer">
                             <a href="pelangganinput.php" class="btn btn-primary">Kembali</a>
-                            <button type="submit" class="btn btn-success" name="submit"> Submit</button>
+                            <button type="submit" class="btn btn-success" name="submit" onclick="confirmSubmit()"> Submit</button>
                         </div>
                     </form>
                     <script type="text/javascript">
+                        function confirmSubmit() {
+                            if (confirm('Yakin data sudah benar?')) {
+                                document.querySelector('.myForm').submit();
+                            } else {
+                                // Tidak melakukan apa-apa jika pengguna membatalkan
+                            }
+                        }
+
                         function getLocation() {
                             if (navigator.geolocation) {
                                 navigator.geolocation.getCurrentPosition(showPosition, showError);

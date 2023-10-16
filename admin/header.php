@@ -54,6 +54,9 @@ include '../assets/conn/config.php';
                         <a class="nav-link" href="pelangganinput.php">DATA PELANGGAN</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="akuninput.php">DATA AKUN</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="logout.php">LOGOUT</a>
                     </li>
                 </ul>
