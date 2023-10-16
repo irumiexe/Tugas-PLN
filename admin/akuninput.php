@@ -10,15 +10,6 @@ include 'header.php';
     </div>
     <div class="panel-container">
         <div class="bootstrap-tabel">
-            <div class="d-flex justify-content-between mb-3">
-                <a href="akunaksi.php?aksi=tambah" class="btn btn-primary">Tambah Akun</a>
-                <form class="d-flex ml-auto">
-                    <input class="form-control mr-1" name="cari" type="search" placeholder="Search" aria-label="Search" value="<?php if (isset($_GET['cari'])) {
-                                                                                                                                    echo $_GET['cari'];
-                                                                                                                                } ?>">
-                    <button class="btn btn-outline-success" type="cari">Search</button>
-                </form>
-            </div>
             <hr>
             <div class="table-responsive">
                 <table class="table table-bordered">
@@ -46,10 +37,7 @@ include 'header.php';
                                 <td class="text-center"><?php echo $d['nama_lengkap'] ?></td>
                                 <td class="text-center"><?php echo $d['username'] ?></td>
                                 <td class="text-center"><?php echo $d['level'] ?></td>
-                                <td class="text-center">
-                                    <a href="akunaksi.php?kode=<?php echo $d['kd_akun'] ?>&aksi=ubah" class="btn btn-success">Ubah</a>
-                                    <a href="#" class="btn btn-danger" onclick="hapusAkun('<?php echo $d['kd_akun']; ?>')">Hapus</a>
-                                </td>
+                                
                             </tr>
                         <?php
                         }
