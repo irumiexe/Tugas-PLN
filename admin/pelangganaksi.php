@@ -1,17 +1,16 @@
 <?php
 include 'header.php';
 
-// Pastikan user sudah login dan ada informasi kd_akun_user di sesi
 if (!isset($_SESSION['kd_akun_user'])) {
-    // Jika tidak, mungkin redirect ke halaman login atau lakukan tindakan lain
     header("Location: login.php");
     exit();
 }
 
 if (isset($_GET['aksi'])) {
     if ($_GET['aksi'] == 'tambah') {
-        // Mengambil kd_akun_user dari sesi
         $kd_akun_user = $_SESSION['kd_akun_user'];
+
+        $alert_message = "Mohon untuk Mengaktifkan Location dan Membuka Aplikasi Gmaps Terlebih Dahulu Agar Memperkuat Akurasi Titik Koordinat!";
 ?>
 
         <div class="container">
@@ -22,38 +21,75 @@ if (isset($_GET['aksi'])) {
             </div>
 
             <div class="panel-container">
+                <center>
+                    <?php
+                    if (isset($alert_message)) {
+                        echo '<div class="alert alert-warning">' . $alert_message . '</div>';
+                    }
+                    ?>
+                </center>
                 <div class="bootstrap-tabel">
-                    <form class="myForm" action="pelangganproses.php?proses=prosestambah" method="post" autocomplete="off" enctype="multipart/form-data" autocomplete="off">
-                        <div class="form-group"> <label for="">Tanggal</label>
-                            <input type="text" name="tanggal" class="form-control" value="<?php echo date('Y-m-d'); ?>" readonly>
+                    <form class="myForm" action="pelangganproses.php?proses=prosestambah" method="post" enctype="multipart/form-data" autocomplete="off" required>
+                        <div class="form-group">
+                            <label for="">Tanggal</label>
+                            <div class="input-group">
+                                <input type="text" name="tanggal" class="form-control" value="<?php echo date('Y-m-d'); ?>" readonly>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="">ID Pelanggan</label>
-                            <input type="teks" name="idpel" class="form-control" value="" placeholder="id pelanggan harus 12 digit" required autofocus minlength="11" maxlength="12">
+                            <p style="font-size: 10px; color: red;"><i>*Mohon isi ID pelanggan dengan benar</i></p>
+                            <div class="input-group">
+                                <input type="text" name="idpel" class="form-control" value="" placeholder="Masukkan ID Pelanggan Minimal 11 Angka dan Maksimal 12 Angka" autofocus minlength="11" maxlength="12" required>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="">Nama Pelanggan</label>
-                            <input type="text" name="nama_pel" class="form-control" value="" placeholder="nama pelanggan" required minlength="2">
+                            <div class="input-group">
+                                <input type="text" name="nama_pel" class="form-control" value="" placeholder="Masukkan Nama Pelanggan" required minlength="2">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            </div>
+
                         </div>
                         <div class="form-group">
-                            <label for="">Daya</label>
-                            <select name="daya" id="" class="form-control" required>
-                                <option value="">-</option>
-                                <option value="450VA">450VA</option>
-                                <option value="900VA">900VA</option>
-                                <option value="1300VA">1300VA</option>
-                                <option value="2200VA">2200VA</option>
-                                <option value="3500VA">3500VA</option>
-                                <option value="6600VA">6600VA</option>
-                            </select>
+                            <label for="">Daya (VA)</label>
+                            <p style="font-size: 10px; color: red;"><i>*Isi salah satu kolom yang dibawah ini</i></p>
+                            <div class="input-group">
+                                <div class="row">
+                                    <div class="col">
+                                        <select name="daya_select" id="dayaSelect" class="form-control" onchange="toggleDayaInput()">
+                                            <option value="" selected>Pilih Opsi</option>
+                                            <option value="450">450</option>
+                                            <option value="900">900</option>
+                                            <option value="1300">1300</option>
+                                            <option value="2200">2200</option>
+                                            <option value="3500">3500</option>
+                                            <option value="4400">4400</option>
+                                            <option value="5500">5500</option>
+                                            <option value="6600">6600</option>
+                                            <option value="7700">7700</option>
+                                            <option value="7700">9000</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" class="form-control" name="daya_input" id="dayaInput" placeholder="Masukkan Jika Tidak Ada Pilihan Daya" disabled>
+                                    </div>
+                                </div>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-flash"></i></span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="">Tipe Pembayaran</label>
-                            <select name="tipe" id="" class="form-control" required>
-                                <option value="">-</option>
-                                <option value="Pascabayar">Pascabayar</option>
-                                <option value="Prabayar">Prabayar</option>
-                            </select>
+                            <div class="input-group">
+                                <select name="tipe" id="" class="form-control" required>
+                                    <option value="">Pilih Opsi</option>
+                                    <option value="Pascabayar">Pascabayar</option>
+                                    <option value="Prabayar">Prabayar</option>
+                                </select>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-shopping-cart"></i></span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <tr>
@@ -63,11 +99,32 @@ if (isset($_GET['aksi'])) {
                         </div>
                         <div class="form-group">
                             <label for="">Photo Meteran</label>
-                            <input type="file" name="pmet" class="form-control" value="" required>
+                            <div class="input-group">
+                                <input type="file" name="pmet" class="form-control" value="" required>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-cloud-upload"></i></span>
+                            </div>
+
                         </div>
                         <div class="form-group">
-                            <label for="">Keterangan</label>
-                            <input type="text" name="ket" class="form-control" value="" placeholder="keterangan" required>
+
+                            <div class="input-group">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="">Keterangan</label>
+                                        <select name="ket" class="form-control" required>
+                                            <option value="">Pilih opsi</option>
+                                            <option value="macet">macet</option>
+                                            <option value="Tinggi">Tinggi</option>
+                                            <option value="Buram">Buram</option>
+                                            <option value="Normal">Normal</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label for="">Rincian</label>
+                                        <input type="text" name="ket2" class="form-control" placeholder="Masukkan Jika Ada Keterangan Lebih Lanjut">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="" hidden>kode_akun</label>
@@ -75,10 +132,20 @@ if (isset($_GET['aksi'])) {
                         </div>
                         <div class="modal-footer">
                             <a href="pelangganinput.php" class="btn btn-primary">Kembali</a>
-                            <button type="submit" class="btn btn-success" name="submit" onclick="confirmSubmit()"> Submit</button>
+                            <button type="submit" class="btn btn-success" name="submit" onclick="confirmSubmit()">Submit</button>
                         </div>
                     </form>
                     <script type="text/javascript">
+                        function toggleDayaInput() {
+                            var dayaSelect = document.getElementById('dayaSelect');
+                            var dayaInput = document.getElementById('dayaInput');
+                            dayaInput.disabled = (dayaSelect.value !== "");
+                        }
+                        document.addEventListener('DOMContentLoaded', function() {
+                            toggleDayaInput();
+                        });
+
+
                         function confirmSubmit() {
                             if (confirm('Yakin data sudah benar?')) {
                                 document.querySelector('.myForm').submit();
@@ -127,35 +194,44 @@ if (isset($_GET['aksi'])) {
                     $data = $db->query("SELECT * From tbl_pelanggan where idpel='$_GET[kode]'");
                     while ($d = mysqli_fetch_array($data)) {
                     ?>
-                        <form action="pelangganproses.php?proses=ubah" method="post" enctype="multipart/form-data">
+                        <form action="pelangganproses.php?proses=ubah&kode=<?php echo $d['idpel']; ?>" method="post" enctype="multipart/form-data">
+                            <div class="form-group" hidden>
+                                <label for="kd_idpel">kd_idpel</label>
+                                <input type="hidden" name="kd_idpel" class="form-control" value="<?php echo $d['kd_idpel']; ?>" readonly>
+                            </div>
                             <div>
                                 <label for="">ID Pelanggan</label>
-                                <input type="text" name="idpel" class="form-control" value="<?php echo $d['idpel'] ?>" placeholder="id pelanggan harus 12 digit" pattern="^([1-9])[0-9]{11}$" required autofocus maxlength="12">
+                                <div class="input-group">
+                                    <input type="text" name="idpel" class="form-control" value="<?php echo $d['idpel'] ?>" placeholder="Masukkan ID Pelanggan Minimal 11 digit" required autofocus min="10" maxlength="12">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="">Nama Pelanggan</label>
-                                <input type="text" name="nama_pel" class="form-control" value="<?php echo $d['nama_pel'] ?>" placeholder="nama pelanggan" required>
+                                <div class="input-group">
+                                    <input type="text" name="nama_pel" class="form-control" value="<?php echo $d['nama_pel'] ?>" placeholder="nama pelanggan" required minlength="2">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label for="">Daya</label>
-                                <select name="daya" id="" class="form-control" required>
-                                    <option value="450VA">450VA</option>
-                                    <option value="900VA">900VA</option>
-                                    <option value="1300VA">1300VA</option>
-                                    <option value="2200VA">2200VA</option>
-                                    <option value="3500VA">3500VA</option>
-                                    <option value="6600VA">6600VA</option>
-                                </select>
+                                <label for="">Daya (VA)</label>
+                                <div class="input-group">
+                                    <input type="text" value="<?php echo $d['daya'] ?>" name="daya" id="" class="form-control">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-flash"></i></span>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="">Tipe Pembayaran</label>
-                                <select name="tipe" id="" class="form-control" required>
-                                    <option value=<?php echo $d['tipe'] ?>""><?php echo $d['tipe'] ?></option>
-                                    <option value="Pascabayar">Pascabayar</option>
-                                    <option value="Prabayar">Prabayar</option>
-                                </select>
+                                <div class="input-group">
+                                    <select name="tipe" id="" class="form-control" required>
+                                        <option value="<?php echo $d['tipe'] ?>"><?php echo $d['tipe'] ?></option>
+                                        <option value="Pascabayar">Pascabayar</option>
+                                        <option value="Prabayar">Prabayar</option>
+                                    </select>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-shopping-cart"></i></span>
+                                </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" hidden>
                                 <label for="">Lokasi</label>
                                 <tr>
                                     <td><input type="text" name="latitude" class="form-control" value="<?php echo $d['latitude'] ?>"></td>
@@ -164,26 +240,53 @@ if (isset($_GET['aksi'])) {
                             </div>
                             <div class="form-group">
                                 <label for="">Photo Meteran</label>
-                                <input type="file" name="pmet" class="form-control" value="<?php echo $d['pmet'] ?>">
+                                <div class="input-group" required>
+                                    <input type="file" name="pmet" class="form-control" value="<?php echo $d['pmet'] ?>">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-cloud-upload"></i></span>
+                                </div>
+
                             </div>
                             <div class="form-group">
-                                <label for="">Keterangan</label>
-                                <input type="text" name="ket" class="form-control" value="<?php echo $d['ket'] ?>" placeholder="keterangan" required>
+
+                                <div class="input-group">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="">Keterangan</label>
+                                            <select name="ket" class="form-control" required>
+                                                <option value="<?php echo $d['ket'] ?>"> <?php echo $d['ket'] ?></option>
+                                                <option value="macet">macet</option>
+                                                <option value="Tinggi">Tinggi</option>
+                                                <option value="Buram">Buram</option>
+                                                <option value="Normal">Normal</option>
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <label for="">Rincian</label>
+                                            <input type="text" name="ket2" class="form-control" value="<?php echo $d['ket2'] ?>" placeholder="Masukkan Jika Ada Keterangan Lebih Lanjut">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="" hidden>kode_akun</label>
-                                <input type="hidden" name="kd_akun" class="form-control" value="<?php echo $d['kd_akun']; ?>" readonly>
-                            </div>
-                            <div class="modal-footer">
-                                <a href="pelangganinput.php" class="btn btn-primary">Kembali</a>
-                                <input type="submit" class="btn btn-success" value="Ubah">
-                            </div>
-                        </form>
-                    <?php } ?>
                 </div>
             </div>
-        </div>
+            <div class="form-group" hidden>
+                <label for="">kode_akun</label>
+                <input type="hidden" name="kd_akun" class="form-control" value="<?php echo $d['kd_akun']; ?>" readonly>
+            </div>
+            <div class="modal-footer">
+                <a href="pelangganinput.php" class="btn btn-primary">Kembali</a>
+                <input type="submit" class="btn btn-success" value="Ubah" onclick="confirmUpdate();">
+            </div>
+            </form>
+            <script>
+                function confirmUpdate() {
+                    if (confirm('Yakin data sudah benar?')) {
+                        document.querySelector('form').submit();
+                    } else {}
+                }
+            </script>
+        <?php } ?>
 <?php
     }
 }
-?>
+?>  
