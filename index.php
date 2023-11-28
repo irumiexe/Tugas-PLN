@@ -15,9 +15,9 @@ if (isset($_GET['aksi'])) {
             $_SESSION['username'] = $username;
             $_SESSION['level'] = $data['level'];
 
-            if ($data['level'] == 'Admin') {
+            if ($data['level'] == '0') {
                 header("location:admin/index.php");
-            } elseif ($data['level'] == 'petlap') {
+            } elseif ($data['level'] == '1') {
                 header("location:petlap/index.php");
             } else {
                 header("location:index.php?pesan=gagal");
@@ -82,15 +82,15 @@ if (isset($_GET['aksi'])) {
     ?>
     <div class="container">
         <center>
-            <img style="width: 100px; display: inline-block; vertical-align: middle;" src="img/Logo_PLN.png" alt="Logo">
+            <img style="width: 100px; display: inline-block; vertical-align: middle;" src="assets/img/Logo_PLN.png" alt="Logo">
         </center>
         <form action="index.php?aksi=login" method="post" enctype="multipart/form-data">
             <br>
-            <div style="font-size: 18px; text-align:center;">
+            <div style="text-align:center;">
                 <p>Sistem Informasi Berbasis Website</p>
-                <p>Login ke Akun Anda</p>
+                <p style="font-size: 12px;">Login ke Akun Anda</p>
             </div>
-
+            <br>
             <div class="input-group">
                 <input type="text" name="username" class="form-control" placeholder="Username" autofocus autocomplete="off">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
